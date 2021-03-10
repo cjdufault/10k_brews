@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Establishment, Drink
-from .forms import EstablishmentSearchForm, NewDrinkForm, UserRegistrationForm
+from .forms import EstablishmentSearchForm, NewDrinkForm, UserRegistrationForm, UserHasVisitedForm
 
-search_form = EstablishmentSearchForm
+search_form = EstablishmentSearchForm   # for search bar used in base.html
 
 
 def home(request):
@@ -43,10 +43,23 @@ def search(request):
 
 def establishment_detail(request, establishment_pk):
     establishment = get_object_or_404(Establishment, pk=establishment_pk)
+
+    visited_form = UserHasVisitedForm
     drinks = Drink.objects.filter(establishment=establishment).order_by('name')
 
+    if establishment.users_visited.contains(request.user):
+        user_has_visited = True
+    else:
+        user_has_visited = False
+
     return render(request, 'detail_pages/establishment.html',
-                  {'establishment': establishment, 'drinks': drinks, 'search_form': search_form})
+                  {'establishment': establishment, 'drinks': drinks,
+                   'search_form': search_form, 'visited_form': visited_form, 'user_has_visited': user_has_visited})
+
+
+@login_required
+def set_visited(request, establishment_pk, visited):
+    redirect('establishment_detail', establishment_pk=establishment_pk)
 
 
 def drink_detail(request, drink_pk):

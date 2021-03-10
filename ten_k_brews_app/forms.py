@@ -9,6 +9,10 @@ class EstablishmentSearchForm(forms.Form):
     search_term = forms.CharField(label='Search', max_length=100)
 
 
+class UserHasVisitedForm(forms.Form):
+    user_has_visited = forms.BooleanField(label='Visited?')
+
+
 class NewDrinkForm(forms.ModelForm):
     class Meta:
         model = Drink

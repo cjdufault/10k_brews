@@ -3,7 +3,19 @@
 {% block content %}
 
 <h2>{{ establishment.name }}</h2>
-<p>{{ establishment.type }}</p>
+<p>
+    {{ establishment.type }}
+    <form id="visited-form" method="POST" action="{% url 'establishment_detail' establishment_pk=establishment.pk %}">
+        {% csrf_token %}
+        {{ visited_form }}
+        <input type="submit" value="Save">
+    </form>
+    {% if user_has_visited %}
+
+    {% else %}
+
+    {% endif %}
+</p>
 <hr>
 
 {% if establishment.description %}

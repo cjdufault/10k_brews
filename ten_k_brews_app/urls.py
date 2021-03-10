@@ -26,6 +26,7 @@ urlpatterns = [
 
     # detail page urls
     path('establishment/<int:establishment_pk>', views.establishment_detail, name='establishment_detail'),
+    path('establishment/set_visited/<int:establishment_pk>/<bool:visited>', views.set_visited, name='set_visited'),
     path('drink/<int:drink_pk>', views.drink_detail, name='drink_detail'),
 
     # form urls
