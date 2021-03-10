@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Establishment, Drink
-from .forms import EstablishmentSearchForm, NewDrinkForm, UserRegistrationForm, UserHasVisitedForm
+from .forms import EstablishmentSearchForm, NewDrinkForm, UserRegistrationForm
 
 search_form = EstablishmentSearchForm   # for search bar used in base.html
 
@@ -34,7 +34,7 @@ def browse(request, type_filter):
 def search(request):
     search_term = request.GET.get('search_term')
 
-    if search_term:
+    if search_term:     # check that search term is entered
         establishments = Establishment.objects.filter(name__icontains=search_term).order_by('name')
         return render(request, 'browse_pages/list.html', {'establishments': establishments, 'search_form': search_form})
 
@@ -44,22 +44,28 @@ def search(request):
 def establishment_detail(request, establishment_pk):
     establishment = get_object_or_404(Establishment, pk=establishment_pk)
 
-    visited_form = UserHasVisitedForm
+    visited = Establishment.objects.filter(users_visited__username=request.user.username)
     drinks = Drink.objects.filter(establishment=establishment).order_by('name')
-
-    if establishment.users_visited.contains(request.user):
-        user_has_visited = True
-    else:
-        user_has_visited = False
 
     return render(request, 'detail_pages/establishment.html',
                   {'establishment': establishment, 'drinks': drinks,
-                   'search_form': search_form, 'visited_form': visited_form, 'user_has_visited': user_has_visited})
+                   'search_form': search_form, 'visited': visited})
 
 
+# adds the user to the list of the users who have visited an establishment
 @login_required
 def set_visited(request, establishment_pk, visited):
-    redirect('establishment_detail', establishment_pk=establishment_pk)
+    establishment = get_object_or_404(Establishment, pk=establishment_pk)
+
+    visited_bool = visited == 'True'
+    currently_visited = Establishment.objects.filter(users_visited__username=request.user.username)
+
+    if visited_bool and not currently_visited:       # mark visited True if not currently True
+        establishment.users_visited.add(request.user)
+    elif not visited_bool and currently_visited:     # mark visited False if not currently False
+        establishment.users_visited.remove(request.user)
+
+    return redirect('establishment_detail', establishment_pk=establishment_pk)
 
 
 def drink_detail(request, drink_pk):
