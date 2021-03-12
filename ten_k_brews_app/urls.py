@@ -28,6 +28,7 @@ urlpatterns = [
     path('establishment/<int:establishment_pk>', views.establishment_detail, name='establishment_detail'),
     path('establishment/set_visited/<int:establishment_pk>/<str:visited>', views.set_visited, name='set_visited'),
     path('drink/<int:drink_pk>', views.drink_detail, name='drink_detail'),
+    path('drink/set_drunk/<int:drink_pk>/<str:drunk>', views.set_drunk, name='set_drunk'),
 
     # form urls
     path('new_drink/<int:establishment_pk>', views.new_drink_form, name='new_drink_form'),

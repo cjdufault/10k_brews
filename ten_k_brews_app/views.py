@@ -53,18 +53,17 @@ def establishment_detail(request, establishment_pk):
                    'search_form': search_form, 'visited': visited})
 
 
-# adds the user to the list of the users who have visited an establishment
+# adds the establishment to the list of the establishments the user has visited
 @login_required
 def set_visited(request, establishment_pk, visited):
     establishment = get_object_or_404(Establishment, pk=establishment_pk)
     user_data = UserData.objects.get(user=request.user)
 
-    visited_bool = visited == 'True'
     currently_visited = establishment in user_data.user_establishments.all()
 
-    if visited_bool and not currently_visited:       # mark visited True if not currently True
+    if visited == 'True' and not currently_visited:       # mark visited True if not currently True
         user_data.user_establishments.add(establishment)
-    elif not visited_bool and currently_visited:     # mark visited False if not currently False
+    elif visited == 'False' and currently_visited:     # mark visited False if not currently False
         user_data.user_establishments.remove(establishment)
 
     return redirect('establishment_detail', establishment_pk=establishment_pk)
@@ -77,6 +76,22 @@ def drink_detail(request, drink_pk):
     drunk = drink in user_data.user_drinks.all()
 
     return render(request, 'detail_pages/drink.html', {'drink': drink, 'search_form': search_form, 'drunk': drunk})
+
+
+# adds the drink to the list of the drinks the user has drunk
+@login_required
+def set_drunk(request, drink_pk, drunk):
+    drink = get_object_or_404(Drink, pk=drink_pk)
+    user_data = UserData.objects.get(user=request.user)
+
+    currently_drunk = drink in user_data.user_drinks.all()  # if only
+
+    if drunk == 'True' and not currently_drunk:       # mark visited True if not currently True
+        user_data.user_drinks.add(drink)
+    elif drunk == 'False' and currently_drunk:     # mark visited False if not currently False
+        user_data.user_drinks.remove(drink)
+
+    return redirect('drink_detail', drink_pk=drink_pk)
 
 
 @login_required
