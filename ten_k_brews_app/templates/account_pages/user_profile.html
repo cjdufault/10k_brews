@@ -15,7 +15,7 @@
 <h3>Drinks Added:</h3>
 {% for drink in drinks_added %}
     <div>
-        <a href="{% url 'drink_detail' drink_pk=drink.pk %}">{{ drink }} -- {{ drink.establishment }}</a>
+        <a href="{% url 'drink_detail' drink_pk=drink.pk %}">{{ drink }} -- {{ drink.establishment.name }}</a>
     </div>
 {% empty %}
     <div>{{ user.username }} hasn't added any drinks yet!</div>

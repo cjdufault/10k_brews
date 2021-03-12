@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import Establishment, Drink
+from .models import Establishment, Drink, UserData
 from .forms import EstablishmentSearchForm, NewDrinkForm, UserRegistrationForm
 
 search_form = EstablishmentSearchForm   # for search bar used in base.html
@@ -43,8 +43,9 @@ def search(request):
 
 def establishment_detail(request, establishment_pk):
     establishment = get_object_or_404(Establishment, pk=establishment_pk)
+    user_data = UserData.objects.get(user=request.user)
 
-    visited = Establishment.objects.filter(users_visited__username=request.user.username)
+    visited = establishment in user_data.user_establishments.all()
     drinks = Drink.objects.filter(establishment=establishment).order_by('name')
 
     return render(request, 'detail_pages/establishment.html',
@@ -56,21 +57,26 @@ def establishment_detail(request, establishment_pk):
 @login_required
 def set_visited(request, establishment_pk, visited):
     establishment = get_object_or_404(Establishment, pk=establishment_pk)
+    user_data = UserData.objects.get(user=request.user)
 
     visited_bool = visited == 'True'
-    currently_visited = Establishment.objects.filter(users_visited__username=request.user.username)
+    currently_visited = establishment in user_data.user_establishments.all()
 
     if visited_bool and not currently_visited:       # mark visited True if not currently True
-        establishment.users_visited.add(request.user)
+        user_data.user_establishments.add(establishment)
     elif not visited_bool and currently_visited:     # mark visited False if not currently False
-        establishment.users_visited.remove(request.user)
+        user_data.user_establishments.remove(establishment)
 
     return redirect('establishment_detail', establishment_pk=establishment_pk)
 
 
 def drink_detail(request, drink_pk):
     drink = get_object_or_404(Drink, pk=drink_pk)
-    return render(request, 'detail_pages/drink.html', {'drink': drink, 'search_form': search_form})
+    user_data = UserData.objects.get(user=request.user)
+
+    drunk = drink in user_data.user_drinks.all()
+
+    return render(request, 'detail_pages/drink.html', {'drink': drink, 'search_form': search_form, 'drunk': drunk})
 
 
 @login_required
@@ -98,11 +104,15 @@ def new_drink_form(request, establishment_pk):
 
 def user_profile(request, username):
     user = User.objects.get_by_natural_key(username)
-    places_visited = Establishment.objects.filter(users_visited__username=user.username).order_by('name')
-    drinks_added = Drink.objects.filter(user=user)
+    user_data = UserData.objects.get(user=user)
+
+    places_visited = user_data.user_establishments.all().order_by('name')
+    drinks_added = Drink.objects.filter(user=user).order_by('name')
+    drinks_drunk = user_data.user_drinks.all().order_by('name')
+
     return render(request, 'account_pages/user_profile.html',
                   {'user': user, 'search_form': search_form,
-                   'places_visited': places_visited, 'drinks_added': drinks_added})
+                   'places_visited': places_visited, 'drinks_drunk': drinks_drunk, 'drinks_added': drinks_added})
 
 
 def register(request):
@@ -111,9 +121,14 @@ def register(request):
         if registration_form.is_valid():
             user = registration_form.save()
             user = authenticate(username=request.POST['username'], password=request.POST['password1'])
+
+            # make and save data object for the user
+            user_data = UserData(user=user)
+            user_data.save()
+
             if user:
                 login(request, user)
-                return redirect('my_user_profile')
+                return redirect('user_profile', username=user.username)
             else:
                 messages.add_message(request, messages.ERROR, 'Unable to log in new user')
         else:

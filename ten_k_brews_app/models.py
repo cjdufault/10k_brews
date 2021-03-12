@@ -24,7 +24,6 @@ class Establishment(models.Model):
     name = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=10000, blank=True)
     type = models.CharField(max_length=10, choices=ESTABLISHMENT_TYPES, blank=False)
-    users_visited = models.ManyToManyField(User)    # all users who have visited here
 
     # location variables
     address = models.CharField(max_length=100, blank=False)
@@ -68,7 +67,18 @@ class Drink(models.Model):
     def __str__(self):
         string = f'{self.name} -- {self.type}'
 
-        if self.style is not None:
+        if self.style:
             string += f' -- {self.style}'
 
         return string
+
+
+class UserData(models.Model):
+    # what user the data is for
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=False, unique=True)
+
+    user_drinks = models.ManyToManyField(Drink, blank=True)                     # drinks the user has had
+    user_establishments = models.ManyToManyField(Establishment, blank=True)     # places the user has been
+
+    def __str__(self):
+        return f'{self.user} data'

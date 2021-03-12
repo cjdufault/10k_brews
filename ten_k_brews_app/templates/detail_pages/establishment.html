@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for user in visited %}
-{{ user }}
-{% endfor %}
 
 <h2>{{ establishment.name }}</h2>
 <p>{{ establishment.type }}</p>
+
 {% if not visited %}
     <form id="visited-form" method="GET" action="{% url 'set_visited' establishment_pk=establishment.pk visited='True' %}">
         <input id="visited-button" type="submit" value="I've been here!">

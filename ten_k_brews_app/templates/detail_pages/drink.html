@@ -4,6 +4,17 @@
 
 <h2>{{ drink.name }}</h2>
 <p>{{ drink.type }} -- <a href="{% url 'establishment_detail' establishment_pk=drink.establishment.pk %}"> {{ drink.establishment.name }}</a></p>
+
+{% if not visited %}
+    <form id="visited-form" method="GET" action="{% url 'set_visited' establishment_pk=establishment.pk visited='True' %}">
+        <input id="visited-button" type="submit" value="I've been here!">
+    </form>
+{% else %}
+    <form id="visited-form" method="GET" action="{% url 'set_visited' establishment_pk=establishment.pk visited='False' %}">
+        <label for="visited-button">You've been here!</label>
+        <input id="visited-button" type="submit" value="Undo">
+    </form>
+{% endif %}
 <hr>
 
 {% if drink.style or drink.description %}
