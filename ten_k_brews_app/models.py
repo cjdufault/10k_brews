@@ -62,7 +62,7 @@ class Drink(models.Model):
     establishment = models.ForeignKey(Establishment, on_delete=models.CASCADE)
 
     # user that uploaded this drink; will be set to None if User is deleted
-    user = models.ForeignKey(User, default=None, on_delete=models.SET_DEFAULT, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         string = f'{self.name} -- {self.type}'
