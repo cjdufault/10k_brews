@@ -3,13 +3,11 @@
 {% block content %}
 
 {% for establishment in establishments %}
-
-<div class="establishment" id="establishment_{{ establishment.pk }}">
-    <a href="{% url 'establishment_detail' establishment_pk=establishment.pk %}">{{ establishment }}</a>
-</div>
-
+    <div class="establishment" id="establishment_{{ establishment.pk }}">
+        <a href="{% url 'establishment_detail' establishment_pk=establishment.pk %}">{{ establishment }}</a>
+    </div>
 {% empty %}
-<p>Nothing found!</p>
+    <p>Nothing found!</p>
 {% endfor %}
 
 {% endblock %}

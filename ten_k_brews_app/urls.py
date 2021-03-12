@@ -26,15 +26,15 @@ urlpatterns = [
 
     # detail page urls
     path('establishment/<int:establishment_pk>', views.establishment_detail, name='establishment_detail'),
+    path('establishment/set_visited/<int:establishment_pk>/<str:visited>', views.set_visited, name='set_visited'),
     path('drink/<int:drink_pk>', views.drink_detail, name='drink_detail'),
+    path('drink/set_drunk/<int:drink_pk>/<str:drunk>', views.set_drunk, name='set_drunk'),
 
     # form urls
     path('new_drink/<int:establishment_pk>', views.new_drink_form, name='new_drink_form'),
 
     # account urls
-    # TODO: replace views.home in user urls with proper views
-    path('user/profile/<int:user_pk>/', views.home, name='user_profile'),
-    path('user/profile/', views.home, name='my_user_profile'),
+    path('user/profile/<str:username>/', views.user_profile, name='user_profile'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='account_pages/login.html'), name='login'),
     path('accounts/logout/', views.logout_user, name='logout'),
     path('register/', views.register, name='register')
