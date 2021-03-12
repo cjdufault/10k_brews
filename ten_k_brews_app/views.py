@@ -43,14 +43,19 @@ def search(request):
 
 def establishment_detail(request, establishment_pk):
     establishment = get_object_or_404(Establishment, pk=establishment_pk)
-    user_data = UserData.objects.get(user=request.user)
+    authenticated = request.user.is_authenticated
 
-    visited = establishment in user_data.user_establishments.all()
+    if authenticated:
+        user_data = UserData.objects.get(user=request.user)
+        visited = establishment in user_data.user_establishments.all()
+    else:
+        visited = None
+
     drinks = Drink.objects.filter(establishment=establishment).order_by('name')
 
     return render(request, 'detail_pages/establishment.html',
                   {'establishment': establishment, 'drinks': drinks,
-                   'search_form': search_form, 'visited': visited})
+                   'search_form': search_form, 'visited': visited, 'authenticated': authenticated})
 
 
 # adds the establishment to the list of the establishments the user has visited
@@ -71,11 +76,16 @@ def set_visited(request, establishment_pk, visited):
 
 def drink_detail(request, drink_pk):
     drink = get_object_or_404(Drink, pk=drink_pk)
-    user_data = UserData.objects.get(user=request.user)
+    authenticated = request.user.is_authenticated
 
-    drunk = drink in user_data.user_drinks.all()
+    if authenticated:
+        user_data = UserData.objects.get(user=request.user)
+        drunk = drink in user_data.user_drinks.all()
+    else:
+        drunk = None
 
-    return render(request, 'detail_pages/drink.html', {'drink': drink, 'search_form': search_form, 'drunk': drunk})
+    return render(request, 'detail_pages/drink.html',
+                  {'drink': drink, 'search_form': search_form, 'drunk': drunk, 'authenticated': authenticated})
 
 
 # adds the drink to the list of the drinks the user has drunk

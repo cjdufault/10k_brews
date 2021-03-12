@@ -5,15 +5,17 @@
 <h2>{{ drink.name }}</h2>
 <p>{{ drink.type }} -- <a href="{% url 'establishment_detail' establishment_pk=drink.establishment.pk %}"> {{ drink.establishment.name }}</a></p>
 
-{% if not drunk %}
-    <form id="drunk-form" method="GET" action="{% url 'set_drunk' drink_pk=drink.pk drunk='True' %}">
-        <input id="drunk-button" type="submit" value="I've had this!">
-    </form>
-{% else %}
-    <form id="drunk-form" method="GET" action="{% url 'set_drunk' drink_pk=drink.pk drunk='False' %}">
-        <label for="drunk-button">You've had this!</label>
-        <input id="drunk-button" type="submit" value="Undo">
-    </form>
+{% if authenticated %}
+    {% if not drunk %}
+        <form id="drunk-form" method="GET" action="{% url 'set_drunk' drink_pk=drink.pk drunk='True' %}">
+            <input id="drunk-button" type="submit" value="I've had this!">
+        </form>
+    {% else %}
+        <form id="drunk-form" method="GET" action="{% url 'set_drunk' drink_pk=drink.pk drunk='False' %}">
+            <label for="drunk-button">You've had this!</label>
+            <input id="drunk-button" type="submit" value="Undo">
+        </form>
+    {% endif %}
 {% endif %}
 <hr>
 
