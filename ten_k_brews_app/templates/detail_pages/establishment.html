@@ -41,7 +41,7 @@
 
 <div id="map-id" style="width: 600px; height: 400px;"></div>
 <script>
-    var location_map = L.map('map-id').setView([51.505, -0.09], 13);
+    var location_map = L.map('map-id').setView([{{ establishment.latitude }}, {{ establishment.longitude }}], 13);
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={{ mapbox_token }}', {
 		maxZoom: 18,
@@ -53,7 +53,7 @@
 	}).addTo(location_map);
     L.control.scale().addTo(location_map);
 
-    var establishment = L.marker([51.505, -0.09]).addTo(location_map);
+    var establishment = L.marker([{{ establishment.latitude }}, {{ establishment.longitude }}]).addTo(location_map);
     establishment.bindPopup('{{ establishment.name }}');
 </script>
 

@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .models import Establishment, Drink, UserData
 from .forms import EstablishmentSearchForm, NewDrinkForm, UserRegistrationForm
 import environ
+from . import osm_geolocator
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
 
@@ -51,6 +52,13 @@ def establishment_detail(request, establishment_pk):
     establishment = get_object_or_404(Establishment, pk=establishment_pk)
     authenticated = request.user.is_authenticated
 
+    # if either lat or long is missing, get data for both from osm_geolocator
+    if not establishment.latitude or not establishment.longitude:
+        coordinates = osm_geolocator.get(address=establishment.address, city=establishment.city,
+                                         state=establishment.state, zip_code=establishment.zip_code)
+        establishment.latitude = coordinates[0]
+        establishment.longitude = coordinates[1]
+
     if authenticated:
         user_data = UserData.objects.get(user=request.user)
         visited = establishment in user_data.user_establishments.all()
@@ -59,11 +67,9 @@ def establishment_detail(request, establishment_pk):
 
     drinks = Drink.objects.filter(establishment=establishment).order_by('name')
 
-    # TODO: replace latitude and longitude w/ actual values for address
     return render(request, 'detail_pages/establishment.html',
                   {'establishment': establishment, 'drinks': drinks, 'search_form': search_form,
-                   'visited': visited, 'authenticated': authenticated, 'latitude': 0, 'longitude': 0,
-                   'mapbox_token': mapbox_token})
+                   'visited': visited, 'authenticated': authenticated, 'mapbox_token': mapbox_token})
 
 
 # adds the establishment to the list of the establishments the user has visited

@@ -31,6 +31,10 @@ class Establishment(models.Model):
     state = models.CharField(max_length=2, blank=False)
     zip_code = models.CharField(max_length=5, blank=False)
 
+    # coordinate data -- blank when created, will get filled 1st time establishment page is visited
+    latitude = models.CharField(max_length=20, blank=True)
+    longitude = models.CharField(max_length=20, blank=True)
+
     def __str__(self):
         return f'{self.name} -- {self.type} -- {self.city}'
 
