@@ -56,8 +56,11 @@ def establishment_detail(request, establishment_pk):
     if not establishment.latitude or not establishment.longitude:
         coordinates = osm_geolocator.get(address=establishment.address, city=establishment.city,
                                          state=establishment.state, zip_code=establishment.zip_code)
-        establishment.latitude = coordinates[0]
-        establishment.longitude = coordinates[1]
+
+        # check coordinates returned a value
+        if coordinates:
+            establishment.latitude = coordinates[0]
+            establishment.longitude = coordinates[1]
 
     if authenticated:
         user_data = UserData.objects.get(user=request.user)

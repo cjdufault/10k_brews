@@ -39,6 +39,8 @@
     <hr>
 {% endif %}
 
+{# only show map if there are coordinates #}
+{% if establishment.latitude and establishment.longitude %}
 <div id="map-id" style="width: 600px; height: 400px;"></div>
 <script>
     var location_map = L.map('map-id').setView([{{ establishment.latitude }}, {{ establishment.longitude }}], 13);
@@ -56,6 +58,7 @@
     var establishment = L.marker([{{ establishment.latitude }}, {{ establishment.longitude }}]).addTo(location_map);
     establishment.bindPopup('{{ establishment.name }}');
 </script>
+{% endif %}
 
 <p>{{ establishment.address }}<br>
 {{ establishment.city }}, {{ establishment.state }}<br>
