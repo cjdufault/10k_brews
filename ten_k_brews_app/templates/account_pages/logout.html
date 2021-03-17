@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-{% extends 'base.html' %}
 <html>
 <head>
     <title>10,000 Brews</title>
 </head>
+<body>
 
+{% include 'title_bar.html' %}
 {% block content %}
+{% endblock %}
 
 <h2>Goodbye!</h2>
 
 <p>You have been successfully logged out.</p>
 
-{% endblock %}
+<hr>
+<p><small>Created and run by Connor Dufault</small></p>
+</body>
 </html>

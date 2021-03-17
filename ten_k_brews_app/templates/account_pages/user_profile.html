@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-{% extends 'base.html' %}
 <html>
 <head>
-    <title>10,000 Brews - {{ user.username }}</title>
+    <title>10,000 Brews - {{ drink.name }}</title>
 </head>
+<body>
 
+{% include 'title_bar.html' %}
 {% block content %}
+{% endblock %}
 
 <h2>{{ user.username }}</h2>
 
@@ -36,5 +38,7 @@
     <div>{{ user.username }} hasn't added any drinks yet!</div>
 {% endfor %}
 
-{% endblock %}
+<hr>
+<p><small>Created and run by Connor Dufault</small></p>
+</body>
 </html>

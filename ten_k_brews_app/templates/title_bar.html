@@ -1,6 +1,7 @@
 {% url 'logout' as logout_url %}
 
-<body>
+{% block content %}
+
 <h1><a href="/">10,000 Brews</a></h1>
 <h3>Minnesota Breweries, Wineries, Distilleries, and Cideries</h3>
 
@@ -33,10 +34,4 @@
 </form>
 
 <hr>
-
-{% block content %}
 {% endblock %}
-
-<p><small>Created and run by Connor Dufault</small></p>
-
-</body>

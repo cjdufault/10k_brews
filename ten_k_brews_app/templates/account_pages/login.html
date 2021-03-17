@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-{% extends 'base.html' %}
 <html>
 <head>
     <title>10,000 Brews</title>
 </head>
+<body>
 
+{% include 'title_bar.html' %}
 {% block content %}
+{% endblock %}
 
 <h2>Log in</h2>
 
@@ -33,5 +35,7 @@
 
 <p><a href="{% url 'register' %}">Or create an account</a></p>
 
-{% endblock %}
+<hr>
+<p><small>Created and run by Connor Dufault</small></p>
+</body>
 </html>

@@ -5,8 +5,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Establishment, Drink, UserData
 from .forms import EstablishmentSearchForm, NewDrinkForm, UserRegistrationForm
+import environ
 
-search_form = EstablishmentSearchForm   # for search bar used in base.html
+search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
+
+# read environment variables
+env = environ.Env()
+environ.Env.read_env()
+mapbox_token = env('MAPBOX_TOKEN')
 
 
 def home(request):
@@ -53,9 +59,11 @@ def establishment_detail(request, establishment_pk):
 
     drinks = Drink.objects.filter(establishment=establishment).order_by('name')
 
+    # TODO: replace latitude and longitude w/ actual values for address
     return render(request, 'detail_pages/establishment.html',
-                  {'establishment': establishment, 'drinks': drinks,
-                   'search_form': search_form, 'visited': visited, 'authenticated': authenticated})
+                  {'establishment': establishment, 'drinks': drinks, 'search_form': search_form,
+                   'visited': visited, 'authenticated': authenticated, 'latitude': 0, 'longitude': 0,
+                   'mapbox_token': mapbox_token})
 
 
 # adds the establishment to the list of the establishments the user has visited
@@ -66,9 +74,9 @@ def set_visited(request, establishment_pk, visited):
 
     currently_visited = establishment in user_data.user_establishments.all()
 
-    if visited == 'True' and not currently_visited:       # mark visited True if not currently True
+    if visited == 'True' and not currently_visited:     # mark visited True if not currently True
         user_data.user_establishments.add(establishment)
-    elif visited == 'False' and currently_visited:     # mark visited False if not currently False
+    elif visited == 'False' and currently_visited:      # mark visited False if not currently False
         user_data.user_establishments.remove(establishment)
 
     return redirect('establishment_detail', establishment_pk=establishment_pk)

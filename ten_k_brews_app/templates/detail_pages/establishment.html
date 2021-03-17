@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-{% extends 'base.html' %}
-{% load static %}
 <html>
 <head>
     <title>10,000 Brews - {{ establishment.name }}</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
           integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
           crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-            crossorigin=""></script>
+            crossorigin="">
+    </script>
 </head>
+<body>
 
+{% include 'title_bar.html' %}
 {% block content %}
+{% endblock %}
 
 <h2>{{ establishment.name }}</h2>
 <p>{{ establishment.type }}</p>
@@ -36,6 +39,24 @@
     <hr>
 {% endif %}
 
+<div id="map-id" style="width: 600px; height: 400px;"></div>
+<script>
+    var location_map = L.map('map-id').setView([51.505, -0.09], 13);
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={{ mapbox_token }}', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11',
+		tileSize: 512,
+		zoomOffset: -1
+	}).addTo(location_map);
+    L.control.scale().addTo(location_map);
+
+    var establishment = L.marker([51.505, -0.09]).addTo(location_map);
+    establishment.bindPopup('{{ establishment.name }}');
+</script>
+
 <p>{{ establishment.address }}<br>
 {{ establishment.city }}, {{ establishment.state }}<br>
 {{ establishment.zip_code }}</p>
@@ -51,5 +72,7 @@
     <a href="{% url 'new_drink_form' establishment_pk=establishment.pk %}">Add a Drink</a>
 {% endif %}
 
-{% endblock %}
+<hr>
+<p><small>Created and run by Connor Dufault</small></p>
+</body>
 </html>
