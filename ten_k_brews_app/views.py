@@ -54,8 +54,9 @@ def establishment_detail(request, establishment_pk):
 
     # if either lat or long is missing, get data for both from osm_geolocator
     if not establishment.latitude or not establishment.longitude:
-        coordinates = osm_geolocator.get(address=establishment.address, city=establishment.city,
-                                         state=establishment.state, zip_code=establishment.zip_code)
+        coordinates = osm_geolocator.get(
+            f'{establishment.address}%20{establishment.city}%20{establishment.state}%20{establishment.zip_code}'
+        )
 
         # check coordinates returned a value
         if coordinates:

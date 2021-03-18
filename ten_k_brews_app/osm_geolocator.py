@@ -6,19 +6,15 @@ import requests
 osm_search_url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&q='
 
 
-def get(address='', city='', state='', zip_code=''):
+def get(address):
+    response = request(address)
 
-    # check that we've been given *something*
-    if address != '' or city != '' or state != '' or zip_code != '':
-        query = f'{address}%20{city}%20{state}%20{zip_code}'    # concat all info to form query
-        response = request(query)
+    if response:
+        # extract relevant data
+        latitude = response['lat']
+        longitude = response['lon']
 
-        if response:
-            # extract relevant data
-            latitude = response['lat']
-            longitude = response['lon']
-
-            return latitude, longitude
+        return latitude, longitude
 
 
 def request(query):
