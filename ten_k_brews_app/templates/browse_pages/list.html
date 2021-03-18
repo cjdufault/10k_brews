@@ -10,6 +10,8 @@
 {% block content %}
 {% endblock %}
 
+<h3>{{ list_title }}</h3>
+
 {% for establishment in establishments %}
     <div class="establishment" id="establishment_{{ establishment.pk }}">
         <a href="{% url 'establishment_detail' establishment_pk=establishment.pk %}">{{ establishment }}</a>
