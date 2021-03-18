@@ -15,7 +15,7 @@
 
     {% for establishment in map_establishments %}
         var establishment{{ establishment.pk }} = L.marker([{{ establishment.latitude }}, {{ establishment.longitude }}]).addTo(location_map);
-        establishment{{ establishment.pk }}.bindPopup('<a href="{% url 'establishment_detail' establishment_pk=establishment.pk %}">{{ establishment.name }}</a>');
+        establishment{{ establishment.pk }}.bindPopup('<a href="{% url 'establishment_detail' establishment_pk=establishment.pk %}">{{ establishment }}</a>');
     {% endfor %}
 </script>
 {% endblock %}
