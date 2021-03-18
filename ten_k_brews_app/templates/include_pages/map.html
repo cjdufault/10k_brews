@@ -1,7 +1,7 @@
 {% block map %}
 <div id="map-id" style="width: 600px; height: 400px;"></div>
 <script>
-    var location_map = L.map('map-id').setView([{{ focus_lat }}, {{ focus_lon }}], 13);
+    var location_map = L.map('map-id').setView([{{ focus_lat }}, {{ focus_lon }}], {{ zoom_level }});
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={{ mapbox_token }}', {
 		maxZoom: 18,
@@ -15,7 +15,7 @@
 
     {% for establishment in map_establishments %}
         var establishment{{ establishment.pk }} = L.marker([{{ establishment.latitude }}, {{ establishment.longitude }}]).addTo(location_map);
-        establishment{{ establishment.pk }}.bindPopup('{{ establishment.name }}');
+        establishment{{ establishment.pk }}.bindPopup('<a href="{% url 'establishment_detail' establishment_pk=establishment.pk %}">{{ establishment.name }}</a>');
     {% endfor %}
 </script>
 {% endblock %}

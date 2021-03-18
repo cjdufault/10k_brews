@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from . import osm_geolocator
 
 
 # Create your models here.
@@ -31,9 +32,21 @@ class Establishment(models.Model):
     state = models.CharField(max_length=2, blank=False)
     zip_code = models.CharField(max_length=5, blank=False)
 
-    # coordinate data -- blank when created, will get filled 1st time establishment page is visited
     latitude = models.CharField(max_length=20, blank=True)
     longitude = models.CharField(max_length=20, blank=True)
+
+    # override save method to get coordinates from OSM
+    def save(self, *args, **kwargs):
+        if not self.latitude or not self.longitude:     # only if no coordinate data
+            # get geographical location based on address
+            coordinates = osm_geolocator.get(
+                f'{self.address}%20{self.city}%20{self.state}%20{self.zip_code}'
+            )
+            if coordinates:
+                self.latitude = coordinates[0]
+                self.longitude = coordinates[1]
+
+        super(Establishment, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.name} -- {self.type} -- {self.city}'

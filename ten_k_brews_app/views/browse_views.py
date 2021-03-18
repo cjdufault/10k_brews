@@ -1,12 +1,25 @@
 from django.shortcuts import render, redirect
 from ..forms import EstablishmentSearchForm
 from ..models import Establishment
+from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
+import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
 
+# read environment variables
+env = environ.Env()
+environ.Env.read_env()
+mapbox_token = env('MAPBOX_TOKEN')
+
 
 def home(request):
-    return render(request, 'browse_pages/home.html', {'search_form': search_form})
+    establishments = Establishment.objects.all()
+    return render(request, 'browse_pages/home.html', {'search_form': search_form,
+                                                      'focus_lat': MINNESOTA_COORDINATES[0],
+                                                      'focus_lon': MINNESOTA_COORDINATES[1],
+                                                      'zoom_level': WIDE_ZOOM_LEVEL,
+                                                      'map_establishments': establishments,
+                                                      'mapbox_token': mapbox_token})
 
 
 def browse(request, type_filter):

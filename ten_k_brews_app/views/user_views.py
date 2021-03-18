@@ -4,8 +4,15 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from ..models import Drink, UserData
 from ..forms import UserRegistrationForm, EstablishmentSearchForm
+from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
+import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
+
+# read environment variables
+env = environ.Env()
+environ.Env.read_env()
+mapbox_token = env('MAPBOX_TOKEN')
 
 
 def user_profile(request, username):
@@ -17,8 +24,10 @@ def user_profile(request, username):
     drinks_drunk = user_data.user_drinks.all().order_by('name')
 
     return render(request, 'account_pages/user_profile.html',
-                  {'user': user, 'search_form': search_form,
-                   'places_visited': places_visited, 'drinks_drunk': drinks_drunk, 'drinks_added': drinks_added})
+                  {'user': user, 'search_form': search_form, 'places_visited': places_visited,
+                   'drinks_drunk': drinks_drunk, 'drinks_added': drinks_added,
+                   'focus_lat': MINNESOTA_COORDINATES[0], 'focus_lon': MINNESOTA_COORDINATES[1],
+                   'zoom_level': WIDE_ZOOM_LEVEL, 'map_establishments': places_visited, 'mapbox_token': mapbox_token})
 
 
 def register(request):

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from ..models import Establishment, Drink, UserData
-from ..forms import EstablishmentSearchForm, NewDrinkForm, UserRegistrationForm
-from .. import osm_geolocator
+from ..forms import EstablishmentSearchForm, NewDrinkForm
+from ..constants import LOCATION_ZOOM_LEVEL
 import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
@@ -17,16 +17,6 @@ def establishment_detail(request, establishment_pk):
     establishment = get_object_or_404(Establishment, pk=establishment_pk)
     authenticated = request.user.is_authenticated
 
-    # if either lat or long is missing, get data for both from osm_geolocator
-    if not establishment.latitude or not establishment.longitude:
-        coordinates = osm_geolocator.get(
-            f'{establishment.address}%20{establishment.city}%20{establishment.state}%20{establishment.zip_code}'
-        )
-        # check coordinates returned a value
-        if coordinates:
-            establishment.latitude = coordinates[0]
-            establishment.longitude = coordinates[1]
-
     if authenticated:
         user_data = UserData.objects.get(user=request.user)
         visited = establishment in user_data.user_establishments.all()
@@ -39,7 +29,7 @@ def establishment_detail(request, establishment_pk):
                   {'establishment': establishment, 'drinks': drinks, 'search_form': search_form,
                    'visited': visited, 'authenticated': authenticated, 'mapbox_token': mapbox_token,
                    'focus_lat': establishment.latitude, 'focus_lon': establishment.longitude,
-                   'map_establishments': [establishment]})
+                   'zoom_level': LOCATION_ZOOM_LEVEL, 'map_establishments': [establishment]})
 
 
 # adds the establishment to the list of the establishments the user has visited
