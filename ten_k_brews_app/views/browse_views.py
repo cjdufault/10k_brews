@@ -6,7 +6,7 @@ search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
 
 
 def home(request):
-    return render(request, 'home.html', {'search_form': search_form})
+    return render(request, 'browse_pages/home.html', {'search_form': search_form})
 
 
 def browse(request, type_filter):
