@@ -1,6 +1,14 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>10,000 Brews</title>
+</head>
+<body>
+
+{% include 'include_pages/title_bar.html' %}
 
 {% block content %}
+{% endblock %}
 
 {% for establishment in establishments %}
     <div class="establishment" id="establishment_{{ establishment.pk }}">
@@ -10,4 +18,7 @@
     <p>Nothing found!</p>
 {% endfor %}
 
-{% endblock %}
+<hr>
+<p><small>Created and run by Connor Dufault</small></p>
+</body>
+</html>

@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>10,000 Brews</title>
+    {% include 'include_pages/leaflet_imports.html' %}
+    {% block leaflet %}
+    {% endblock %}
 </head>
 <body>
 
@@ -9,9 +12,9 @@
 {% block content %}
 {% endblock %}
 
-<h2>Goodbye!</h2>
-
-<p>You have been successfully logged out.</p>
+{% include 'include_pages/map.html' %}
+{% block map %}
+{% endblock %}
 
 <hr>
 <p><small>Created and run by Connor Dufault</small></p>
