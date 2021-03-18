@@ -22,7 +22,6 @@ def establishment_detail(request, establishment_pk):
         coordinates = osm_geolocator.get(
             f'{establishment.address}%20{establishment.city}%20{establishment.state}%20{establishment.zip_code}'
         )
-
         # check coordinates returned a value
         if coordinates:
             establishment.latitude = coordinates[0]
@@ -38,7 +37,9 @@ def establishment_detail(request, establishment_pk):
 
     return render(request, 'detail_pages/establishment.html',
                   {'establishment': establishment, 'drinks': drinks, 'search_form': search_form,
-                   'visited': visited, 'authenticated': authenticated, 'mapbox_token': mapbox_token})
+                   'visited': visited, 'authenticated': authenticated, 'mapbox_token': mapbox_token,
+                   'focus_lat': establishment.latitude, 'focus_lon': establishment.longitude,
+                   'map_establishments': [establishment]})
 
 
 # adds the establishment to the list of the establishments the user has visited
