@@ -6,7 +6,7 @@ import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
 
-# read environment variables
+# read environment variables -- requires a .env file in the views/ directory
 env = environ.Env()
 environ.Env.read_env()
 mapbox_token = env('MAPBOX_TOKEN')
