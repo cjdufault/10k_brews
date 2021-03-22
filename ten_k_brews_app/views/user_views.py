@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from ..models import Drink, UserData
+from ..models import Establishment, Drink, UserData, percent_visited
 from ..forms import UserRegistrationForm, EstablishmentSearchForm
 from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
 import environ
@@ -23,9 +23,17 @@ def user_profile(request, username):
     drinks_added = Drink.objects.filter(user=user).order_by('name')
     drinks_drunk = user_data.user_drinks.all().order_by('name')
 
+    visited_percents = {
+        'all': f'{percent_visited(user):.0f}',
+        'breweries': f'{percent_visited(user, Establishment.BREWERY):.0f}',
+        'wineries': f'{percent_visited(user, Establishment.WINERY):.0f}',
+        'distilleries': f'{percent_visited(user, Establishment.DISTILLERY):.0f}',
+        'cideries': f'{percent_visited(user, Establishment.CIDERY):.0f}'
+    }
+
     return render(request, 'account_pages/user_profile.html',
                   {'user': user, 'search_form': search_form, 'places_visited': places_visited,
-                   'drinks_drunk': drinks_drunk, 'drinks_added': drinks_added,
+                   'visited_percents': visited_percents, 'drinks_drunk': drinks_drunk, 'drinks_added': drinks_added,
                    'focus_lat': MINNESOTA_COORDINATES[0], 'focus_lon': MINNESOTA_COORDINATES[1],
                    'zoom_level': WIDE_ZOOM_LEVEL, 'map_establishments': places_visited, 'mapbox_token': mapbox_token})
 

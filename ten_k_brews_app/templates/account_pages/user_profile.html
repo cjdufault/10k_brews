@@ -14,6 +14,14 @@
 
 <h2>{{ user.username }}</h2>
 
+<p>{{ user.username }} has visited:
+    <br>{{ visited_percents.all }}% of All
+    <br>{{ visited_percents.breweries }}% of Breweries
+    <br>{{ visited_percents.wineries }}% of Wineries
+    <br>{{ visited_percents.distilleries }}% of Distilleries
+    <br>{{ visited_percents.cideries }}% of Cideries
+</p>
+
 <h3>Places Visited:</h3>
 {% for establishment in places_visited %}
     <div>
