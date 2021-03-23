@@ -24,8 +24,9 @@ def user_profile(request, username):
     drinks_added = Drink.objects.filter(user=user).order_by('name')
     drinks_drunk = user_data.user_drinks.all().order_by('name')
 
+    # percentages of each category the user has visited
     visited_percents = {
-        'all': f'{percent_visited(user):.0f}',
+        'all': f'{percent_visited(user):.0f}',  # ".0f" rounds to whole percent
         'breweries': f'{percent_visited(user, Establishment.BREWERY):.0f}',
         'wineries': f'{percent_visited(user, Establishment.WINERY):.0f}',
         'distilleries': f'{percent_visited(user, Establishment.DISTILLERY):.0f}',

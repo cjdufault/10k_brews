@@ -2,6 +2,10 @@
 <html>
 <head>
     <title>10,000 Brews</title>
+    {% include 'include_pages/style_links.html' %}
+    {% block style %}
+    {% endblock %}
+
     {% include 'include_pages/leaflet_imports.html' %}
     {% block leaflet %}
     {% endblock %}
