@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from ..models import Establishment, Drink, UserData, percent_visited
+from ..models import Establishment, Drink, UserData
 from ..forms import UserRegistrationForm, EstablishmentSearchForm
 from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
+from ..account_stats import percent_visited
 import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html

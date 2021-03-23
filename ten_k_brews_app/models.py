@@ -1,5 +1,4 @@
 from django.db import models
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from . import osm_geolocator
 
@@ -99,20 +98,3 @@ class UserData(models.Model):
 
     def __str__(self):
         return f'{self.user} data'
-
-
-# returns the % of establishments of a given type (or all, if no type) that a user has visited
-def percent_visited(user, establishment_type=None):
-    user_data = get_object_or_404(UserData, user=user)
-
-    if not user_data:   # returns None if userdata not found for user
-        return None
-
-    if not establishment_type:  # get all if no establishment type
-        total = Establishment.objects.count()
-        visited = user_data.user_establishments.count()
-    else:
-        total = Establishment.objects.filter(type=establishment_type).count()
-        visited = user_data.user_establishments.filter(type=establishment_type).count()
-
-    return (visited / total) * 100
