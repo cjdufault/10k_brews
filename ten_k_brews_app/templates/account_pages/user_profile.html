@@ -34,6 +34,7 @@
 {% empty %}
     <div>{{ user.username }} hasn't visited anywhere yet!</div>
 {% endfor %}
+<br>
 
 {% if places_visited %}
     {% include 'include_pages/map.html' %}
