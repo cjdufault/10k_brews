@@ -132,7 +132,7 @@ textarea {
   text-decoration: none;
   white-space: nowrap;
   background-color: #2c8898;
-  color: #f9f9f9;
+  color: #4a4a4a;
   border-radius: 1px;
   border: 1px solid #2c8898;
   cursor: pointer;
@@ -147,11 +147,11 @@ textarea {
     outline: 1; }
 
 textarea, select, input[type] {
-  color: #f9f9f9;
+  color: #4a4a4a;
   padding: 6px 10px;
   /* The 6px vertically centers text on FF, ignored by Webkit */
   margin-bottom: 10px;
-  background-color: #2c8898;
+  background-color: #f9f9f9;
   border: 1px solid #2c8898;
   border-radius: 4px;
   box-shadow: none;
