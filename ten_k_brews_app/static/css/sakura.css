@@ -164,6 +164,6 @@ label, legend, fieldset {
   margin-bottom: .5rem;
   font-weight: 600; }
 
-.user-login-span {
-    text-align: right;
+.error {
+  color: red;
 }
