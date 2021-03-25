@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from ..models import Establishment, Drink, UserData
 from ..forms import EstablishmentSearchForm, NewDrinkForm
 from ..constants import LOCATION_ZOOM_LEVEL
+from ..detect_mobile import is_mobile
 import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
@@ -29,7 +30,8 @@ def establishment_detail(request, establishment_pk):
                   {'establishment': establishment, 'drinks': drinks, 'search_form': search_form,
                    'visited': visited, 'authenticated': authenticated, 'mapbox_token': mapbox_token,
                    'focus_lat': establishment.latitude, 'focus_lon': establishment.longitude,
-                   'zoom_level': LOCATION_ZOOM_LEVEL, 'map_establishments': [establishment]})
+                   'zoom_level': LOCATION_ZOOM_LEVEL, 'map_establishments': [establishment],
+                   'mobile': is_mobile(request)})
 
 
 # adds the establishment to the list of the establishments the user has visited
@@ -59,7 +61,8 @@ def drink_detail(request, drink_pk):
         drunk = None
 
     return render(request, 'detail_pages/drink.html',
-                  {'drink': drink, 'search_form': search_form, 'drunk': drunk, 'authenticated': authenticated})
+                  {'drink': drink, 'search_form': search_form, 'drunk': drunk,
+                   'authenticated': authenticated, 'mobile': is_mobile(request)})
 
 
 # adds the drink to the list of the drinks the user has drunk
@@ -98,4 +101,5 @@ def new_drink_form(request, establishment_pk):
         drink_form = NewDrinkForm()
 
     return render(request, 'form_pages/new_drink.html',
-                  {'drink_form': drink_form, 'establishment': establishment, 'search_form': search_form})
+                  {'drink_form': drink_form, 'establishment': establishment,
+                   'search_form': search_form, 'mobile': is_mobile(request)})

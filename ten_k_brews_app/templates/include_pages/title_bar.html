@@ -3,6 +3,35 @@
 
 {% block content %}
 
+{% if mobile %}
+<table>
+    <tr>
+        <td><h1><a href="/">10,000 Brews</a></h1></td>
+        <td><img src="{% static 'img/mn_beer.png' %}" width="100px" height="100px"></td>
+    </tr>
+</table>
+
+<p><strong>Minnesota Breweries, Wineries, Distilleries, and Cideries</strong></p>
+
+{% if user.is_authenticated %}
+    <span id='welcome-user-msg'>You are logged in, <a href="{% url 'user_profile' username=user.username %}">{{ user.username }}</a>.  <a href="{% url 'logout' %}">Logout</a></span>
+{% else %}
+    {% if request.path != logout_url %}
+        <span id='login-or-sign-up'><a href="{% url 'login' %}?next={{ request.path }}">Login or sign up</a></span>
+    {% else %}
+        <span id='login-or-sign-up'><a href="{% url 'login' %}?next={% url 'home' %}">Login or sign up</a></span>
+    {% endif %}
+{% endif %}
+
+<p>
+    <a href="{% url 'browse' type_filter='all' %}">All</a>
+    <a href="{% url 'browse' type_filter='breweries' %}">Breweries</a>
+    <a href="{% url 'browse' type_filter='wineries' %}">Wineries</a>
+    <a href="{% url 'browse' type_filter='distilleries' %}">Distilleries</a>
+    <a href="{% url 'browse' type_filter='cideries' %}">Cideries</a>
+</p>
+
+{% else %}
 <table>
     <tr>
         <td>
@@ -19,27 +48,21 @@
             <a href="{% url 'browse' type_filter='distilleries' %}">Distilleries</a>
             <a href="{% url 'browse' type_filter='cideries' %}">Cideries</a>
         </td>
-        
+
         <td>
             {% if user.is_authenticated %}
                 <span id='welcome-user-msg'>You are logged in, <a href="{% url 'user_profile' username=user.username %}">{{ user.username }}</a>.  <a href="{% url 'logout' %}">Logout</a></span>
-
             {% else %}
-
-            {% if request.path != logout_url %}
-
-                <span id='login-or-sign-up'><a href="{% url 'login' %}?next={{ request.path }}">Login or sign up</a></span>
-
-            {% else %}
-
-                <span id='login-or-sign-up'><a href="{% url 'login' %}?next={% url 'home' %}">Login or sign up</a></span>
-
-            {% endif %}
-
+                {% if request.path != logout_url %}
+                    <span id='login-or-sign-up'><a href="{% url 'login' %}?next={{ request.path }}">Login or sign up</a></span>
+                {% else %}
+                    <span id='login-or-sign-up'><a href="{% url 'login' %}?next={% url 'home' %}">Login or sign up</a></span>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
 </table>
+{% endif %}
 
 <form id="search-bar" method="GET" action="{% url 'search' %}">
     {{ search_form }}
