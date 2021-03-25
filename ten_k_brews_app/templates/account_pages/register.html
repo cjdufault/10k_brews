@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>10,000 Brews</title>
+  <title>10,000 Brews</title>
+  {% include 'include_pages/style_links.html' %}
+  {% block style %}
+  {% endblock %}
 </head>
 <body>
 
-{% include 'include_pages/title_bar.html' %}
-{% block content %}
-{% endblock %}
+<h1><a href="/">10,000 Brews</a></h1>
+<hr>
 
 <h2>Register</h2>
 
@@ -53,10 +55,11 @@
     </tr>
     {% endfor %}
   </table>
-  <button type="submit">Register</button>
+  <input type="submit" value="Register">
 </form>
 
-<hr>
-<p><small>Created and run by Connor Dufault</small></p>
+{% include 'include_pages/footer.html' %}
+{% block footer %}
+{% endblock %}
 </body>
 </html>

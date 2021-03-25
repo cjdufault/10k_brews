@@ -2,12 +2,14 @@
 <html>
 <head>
     <title>10,000 Brews</title>
+    {% include 'include_pages/style_links.html' %}
+    {% block style %}
+    {% endblock %}
 </head>
 <body>
 
-{% include 'include_pages/title_bar.html' %}
-{% block content %}
-{% endblock %}
+<h1><a href="/">10,000 Brews</a></h1>
+<hr>
 
 <h2>Log in</h2>
 
@@ -28,14 +30,15 @@
 <form method="POST" action="">
   <table id='login-form'>
     {% csrf_token %}
-    {{ form.as_table }}
+    {{ form }}
   </table>
-  <button type="submit">Login</button>
+  <input type="submit" value="Login">
 </form>
 
 <p><a href="{% url 'register' %}">Or create an account</a></p>
 
-<hr>
-<p><small>Created and run by Connor Dufault</small></p>
+{% include 'include_pages/footer.html' %}
+{% block footer %}
+{% endblock %}
 </body>
 </html>

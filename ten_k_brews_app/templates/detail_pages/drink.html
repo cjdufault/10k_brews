@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>10,000 Brews - {{ drink.name }}</title>
+    {% include 'include_pages/style_links.html' %}
+    {% block style %}
+    {% endblock %}
 </head>
 <body>
 
@@ -34,7 +37,8 @@
 
 <small>Added by {{ drink.user }}</small>
 
-<hr>
-<p><small>Created and run by Connor Dufault</small></p>
+{% include 'include_pages/footer.html' %}
+{% block footer %}
+{% endblock %}
 </body>
 </html>

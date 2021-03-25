@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>10,000 Brews</title>
+    {% include 'include_pages/style_links.html' %}
+    {% block style %}
+    {% endblock %}
 </head>
 <body>
 
@@ -13,7 +16,8 @@
 
 <p>You have been successfully logged out.</p>
 
-<hr>
-<p><small>Created and run by Connor Dufault</small></p>
+{% include 'include_pages/footer.html' %}
+{% block footer %}
+{% endblock %}
 </body>
 </html>

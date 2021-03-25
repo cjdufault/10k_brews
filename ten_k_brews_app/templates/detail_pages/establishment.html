@@ -2,6 +2,10 @@
 <html>
 <head>
     <title>10,000 Brews - {{ establishment.name }}</title>
+    {% include 'include_pages/style_links.html' %}
+    {% block style %}
+    {% endblock %}
+
     {% include 'include_pages/leaflet_imports.html' %}
     {% block leaflet %}
     {% endblock %}
@@ -26,13 +30,28 @@
             <input id="visited-button" type="submit" value="Undo">
         </form>
     {% endif %}
+
+    <a href="{% url 'new_drink_form' establishment_pk=establishment.pk %}">Add a Drink from {{ establishment.name }}</a>
 {% endif %}
+
 <hr>
 
 {% if establishment.description %}
     <p>{{ establishment.description }}</p>
     <hr>
 {% endif %}
+
+<p><strong>Drinks from {{ establishment.name }}:</strong></p>
+{% for drink in drinks %}
+    <div>
+        <a href="{% url 'drink_detail' drink_pk=drink.pk %}">{{ drink }}</a>
+    </div>
+{% empty %}
+    <p>None -- <a href="{% url 'new_drink_form' establishment_pk=establishment.pk %}">Add one now!</a></p>
+{% endfor %}
+<hr>
+
+<p><strong>Location:</strong></p>
 
 {# only show map if there are coordinates #}
 {% if establishment.latitude and establishment.longitude %}
@@ -44,19 +63,9 @@
 <p>{{ establishment.address }}<br>
 {{ establishment.city }}, {{ establishment.state }}<br>
 {{ establishment.zip_code }}</p>
-<hr>
 
-{% for drink in drinks %}
-    <div>
-        <a href="{% url 'drink_detail' drink_pk=drink.pk %}">{{ drink }}</a>
-    </div>
-{% endfor %}
-
-{% if authenticated %}
-    <a href="{% url 'new_drink_form' establishment_pk=establishment.pk %}">Add a Drink</a>
-{% endif %}
-
-<hr>
-<p><small>Created and run by Connor Dufault</small></p>
+{% include 'include_pages/footer.html' %}
+{% block footer %}
+{% endblock %}
 </body>
 </html>
