@@ -58,7 +58,6 @@ def register(request):
                 messages.add_message(request, messages.ERROR, 'Unable to log in new user')
         else:
             messages.add_message(request, messages.INFO, 'Please check the data you entered')
-            print(registration_form)
             # include invalid form with error messages added to it. Error messages will be displayed by the template.
             return render(request, 'account_pages/register.html',
                           {'registration_form': registration_form, 'search_form': search_form})
