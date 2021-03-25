@@ -60,7 +60,8 @@
     <div>{{ user.username }} hasn't added any drinks yet!</div>
 {% endfor %}
 
-<hr>
-<p><small>Created and run by Connor Dufault</small></p>
+{% include 'include_pages/footer.html' %}
+{% block footer %}
+{% endblock %}
 </body>
 </html>
