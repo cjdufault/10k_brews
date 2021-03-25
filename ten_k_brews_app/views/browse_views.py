@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from ..forms import EstablishmentSearchForm
 from ..models import Establishment
-from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL, MOBILE_WIDE_ZOOM_LEVEL
+from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
 from ..detect_mobile import is_mobile
 import environ
 
@@ -18,8 +18,7 @@ def home(request):
     return render(request, 'browse_pages/home.html', {'search_form': search_form,
                                                       'focus_lat': MINNESOTA_COORDINATES[0],
                                                       'focus_lon': MINNESOTA_COORDINATES[1],
-                                                      'zoom_level': WIDE_ZOOM_LEVEL,
-                                                      'mobile_zoom': MOBILE_WIDE_ZOOM_LEVEL,
+                                                      'zoom_level': WIDE_ZOOM_LEVEL, 'mobile_zoom': WIDE_ZOOM_LEVEL - 1,
                                                       'map_establishments': establishments,
                                                       'mapbox_token': mapbox_token, 'mobile': is_mobile(request)})
 

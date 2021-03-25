@@ -30,8 +30,8 @@ def establishment_detail(request, establishment_pk):
                   {'establishment': establishment, 'drinks': drinks, 'search_form': search_form,
                    'visited': visited, 'authenticated': authenticated, 'mapbox_token': mapbox_token,
                    'focus_lat': establishment.latitude, 'focus_lon': establishment.longitude,
-                   'zoom_level': LOCATION_ZOOM_LEVEL, 'map_establishments': [establishment],
-                   'mobile': is_mobile(request)})
+                   'zoom_level': LOCATION_ZOOM_LEVEL, 'mobile_zoom': LOCATION_ZOOM_LEVEL - 1,
+                   'map_establishments': [establishment], 'mobile': is_mobile(request)})
 
 
 # adds the establishment to the list of the establishments the user has visited
