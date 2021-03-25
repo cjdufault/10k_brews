@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from ..forms import EstablishmentSearchForm
 from ..models import Establishment
-from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
+from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL, MOBILE_WIDE_ZOOM_LEVEL
+from ..detect_mobile import is_mobile
 import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
@@ -18,8 +19,9 @@ def home(request):
                                                       'focus_lat': MINNESOTA_COORDINATES[0],
                                                       'focus_lon': MINNESOTA_COORDINATES[1],
                                                       'zoom_level': WIDE_ZOOM_LEVEL,
+                                                      'mobile_zoom': MOBILE_WIDE_ZOOM_LEVEL,
                                                       'map_establishments': establishments,
-                                                      'mapbox_token': mapbox_token})
+                                                      'mapbox_token': mapbox_token, 'mobile': is_mobile(request)})
 
 
 def browse(request, type_filter):
@@ -43,7 +45,7 @@ def browse(request, type_filter):
         return redirect('home')     # redirect home if type_filter is something unexpected
 
     return render(request, 'browse_pages/list.html', {'establishments': establishments, 'list_title': list_title,
-                                                      'search_form': search_form})
+                                                      'search_form': search_form, 'mobile': is_mobile(request)})
 
 
 def search(request):
@@ -53,6 +55,6 @@ def search(request):
         list_title = f'Results for "{search_term}":'
         establishments = Establishment.objects.filter(name__icontains=search_term).order_by('name')
         return render(request, 'browse_pages/list.html', {'establishments': establishments, 'list_title': list_title,
-                                                          'search_form': search_form})
+                                                          'search_form': search_form, 'mobile': is_mobile(request)})
 
     return redirect('browse', type_filter='all')     # show /browse/all if no search term provided

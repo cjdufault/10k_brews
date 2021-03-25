@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from ..models import Establishment, Drink, UserData
 from ..forms import UserRegistrationForm, EstablishmentSearchForm
-from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
+from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL, MOBILE_WIDE_ZOOM_LEVEL
 from ..account_stats import percent_visited
+from ..detect_mobile import is_mobile
 import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
@@ -37,7 +38,8 @@ def user_profile(request, username):
                   {'user': user, 'search_form': search_form, 'places_visited': places_visited,
                    'visited_percents': visited_percents, 'drinks_drunk': drinks_drunk, 'drinks_added': drinks_added,
                    'focus_lat': MINNESOTA_COORDINATES[0], 'focus_lon': MINNESOTA_COORDINATES[1],
-                   'zoom_level': WIDE_ZOOM_LEVEL, 'map_establishments': places_visited, 'mapbox_token': mapbox_token})
+                   'zoom_level': WIDE_ZOOM_LEVEL, 'mobile_zoom': MOBILE_WIDE_ZOOM_LEVEL,
+                   'map_establishments': places_visited, 'mapbox_token': mapbox_token, 'mobile': is_mobile(request)})
 
 
 def register(request):

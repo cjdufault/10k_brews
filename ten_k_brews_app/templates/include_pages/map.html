@@ -1,7 +1,15 @@
 {% block map %}
-<div id="map-id" style="width: 600px; height: 400px;"></div>
+{% if mobile %}
+    <div id="map-id" style="width: 300px; height: 200px;"></div>
+{% else %}
+    <div id="map-id" style="width: 600px; height: 400px;"></div>
+{% endif %}
 <script>
+{% if mobile %}
+    var location_map = L.map('map-id').setView([{{ focus_lat }}, {{ focus_lon }}], {{ mobile_zoom }});
+{% else %}
     var location_map = L.map('map-id').setView([{{ focus_lat }}, {{ focus_lon }}], {{ zoom_level }});
+{% endif %}
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={{ mapbox_token }}', {
 		maxZoom: 18,
