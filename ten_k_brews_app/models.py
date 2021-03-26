@@ -24,6 +24,7 @@ class Establishment(models.Model):
     name = models.CharField(max_length=50, blank=False)
     description = models.TextField(max_length=10000, blank=True)
     type = models.CharField(max_length=10, choices=ESTABLISHMENT_TYPES, blank=False)
+    website = models.CharField(max_length=500, blank=False)
 
     # location variables
     address = models.CharField(max_length=100, blank=False)

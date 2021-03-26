@@ -16,7 +16,7 @@
 {% block content %}
 {% endblock %}
 
-<h2>{{ establishment.name }}</h2>
+<h2><a href="{{ establishment.website }}">{{ establishment.name }}</a></h2>
 <p>{{ establishment.type }}</p>
 
 {% if authenticated %}
