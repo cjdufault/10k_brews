@@ -6,8 +6,6 @@ from ..constants import LOCATION_ZOOM_LEVEL
 from ten_k_brews_app.utilities.detect_mobile import is_mobile
 import environ
 
-search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
-
 # read environment variables -- requires a .env file in the views/ directory
 env = environ.Env()
 environ.Env.read_env()
@@ -27,7 +25,7 @@ def establishment_detail(request, establishment_pk):
     drinks = Drink.objects.filter(establishment=establishment).order_by('name')
 
     return render(request, 'detail_pages/establishment.html',
-                  {'establishment': establishment, 'drinks': drinks, 'search_form': search_form,
+                  {'establishment': establishment, 'drinks': drinks, 'search_form': EstablishmentSearchForm,
                    'visited': visited, 'authenticated': authenticated, 'mapbox_token': mapbox_token,
                    'focus_lat': establishment.latitude, 'focus_lon': establishment.longitude,
                    'zoom_level': LOCATION_ZOOM_LEVEL, 'mobile_zoom': LOCATION_ZOOM_LEVEL - 1,
@@ -61,7 +59,7 @@ def drink_detail(request, drink_pk):
         drunk = None
 
     return render(request, 'detail_pages/drink.html',
-                  {'drink': drink, 'search_form': search_form, 'drunk': drunk,
+                  {'drink': drink, 'search_form': EstablishmentSearchForm, 'drunk': drunk,
                    'authenticated': authenticated, 'mobile': is_mobile(request)})
 
 
@@ -102,4 +100,4 @@ def new_drink_form(request, establishment_pk):
 
     return render(request, 'form_pages/new_drink.html',
                   {'drink_form': drink_form, 'establishment': establishment,
-                   'search_form': search_form, 'mobile': is_mobile(request)})
+                   'search_form': EstablishmentSearchForm, 'mobile': is_mobile(request)})

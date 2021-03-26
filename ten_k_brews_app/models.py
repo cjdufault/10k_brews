@@ -38,7 +38,7 @@ class Establishment(models.Model):
     def save(self, *args, **kwargs):
         if not self.latitude or not self.longitude:     # only if no coordinate data
             # get geographical location based on address
-            coordinates = osm_geolocator.get(
+            coordinates = osm_geolocator.get_coordinates(
                 f'{self.address}%20{self.city}%20{self.state}%20{self.zip_code}'
             )
             if coordinates:

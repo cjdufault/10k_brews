@@ -6,7 +6,7 @@ import requests
 osm_search_url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&q='
 
 
-def get(address):
+def get_coordinates(address):
     response = request(address)
 
     if response:
