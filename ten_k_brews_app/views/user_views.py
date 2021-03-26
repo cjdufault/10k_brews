@@ -5,11 +5,9 @@ from django.contrib import messages
 from ..models import Establishment, Drink, UserData
 from ..forms import UserRegistrationForm, EstablishmentSearchForm
 from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
-from ..account_stats import percent_visited
-from ..detect_mobile import is_mobile
+from ten_k_brews_app.utilities.account_stats import percent_visited
+from ten_k_brews_app.utilities.detect_mobile import is_mobile
 import environ
-
-search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
 
 # read environment variables -- requires a .env file in the views/ directory
 env = environ.Env()
@@ -35,7 +33,7 @@ def user_profile(request, username):
     }
 
     return render(request, 'account_pages/user_profile.html',
-                  {'user': user, 'search_form': search_form, 'places_visited': places_visited,
+                  {'user': user, 'search_form': EstablishmentSearchForm, 'places_visited': places_visited,
                    'visited_percents': visited_percents, 'drinks_drunk': drinks_drunk, 'drinks_added': drinks_added,
                    'focus_lat': MINNESOTA_COORDINATES[0], 'focus_lon': MINNESOTA_COORDINATES[1],
                    'zoom_level': WIDE_ZOOM_LEVEL, 'mobile_zoom': WIDE_ZOOM_LEVEL - 1,
@@ -62,14 +60,14 @@ def register(request):
             messages.add_message(request, messages.INFO, 'Please check the data you entered')
             # include invalid form with error messages added to it. Error messages will be displayed by the template.
             return render(request, 'account_pages/register.html',
-                          {'registration_form': registration_form, 'search_form': search_form})
+                          {'registration_form': registration_form, 'search_form': EstablishmentSearchForm})
 
     registration_form = UserRegistrationForm()
     return render(request, 'account_pages/register.html',
-                  {'registration_form': registration_form, 'search_form': search_form})
+                  {'registration_form': registration_form, 'search_form': EstablishmentSearchForm})
 
 
 def logout_user(request):
     username = request.user.username
     logout(request)
-    return render(request, 'account_pages/logout.html', {'username': username, 'search_form': search_form})
+    return render(request, 'account_pages/logout.html', {'username': username, 'search_form': EstablishmentSearchForm})

@@ -9,6 +9,11 @@ class EstablishmentSearchForm(forms.Form):
     search_term = forms.CharField(label='Search', max_length=100)
 
 
+class EstablishmentSearchByLocationForm(forms.Form):
+    location = forms.CharField(label='Address, City, or Zip', max_length=500)
+    num_results = forms.IntegerField(label='Number of results', min_value=1, max_value=100, initial=10)
+
+
 class NewDrinkForm(forms.ModelForm):
     class Meta:
         model = Drink

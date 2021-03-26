@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>10,000 Brews</title>
+    {% include 'include_pages/style_links.html' %}
+    {% block style %}
+    {% endblock %}
+</head>
+<body>
+
+{% include 'include_pages/title_bar.html' %}
+{% block content %}
+{% endblock %}
+
+<h3>Search by location:</h3>
+
+<form id="location_search" method="GET" action="{% url 'search_by_location' %}">
+    {{ location_search_form }}
+    <input type="submit" value="Search by Location">
+</form>
+
+{% include 'include_pages/footer.html' %}
+{% block footer %}
+{% endblock %}
+</body>
+</html>

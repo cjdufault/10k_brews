@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from .models import Establishment, UserData
+from ten_k_brews_app.models import Establishment, UserData
 
 
 # returns the % of establishments of a given type (or all, if no type) that a user has visited

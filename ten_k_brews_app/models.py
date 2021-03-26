@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from . import osm_geolocator
+from .utilities import osm_geolocator
 
 
 class Establishment(models.Model):
@@ -31,14 +31,14 @@ class Establishment(models.Model):
     state = models.CharField(max_length=2, blank=False)
     zip_code = models.CharField(max_length=5, blank=False)
 
-    latitude = models.CharField(max_length=20, blank=True)
-    longitude = models.CharField(max_length=20, blank=True)
+    latitude = models.FloatField(blank=True, editable=False)
+    longitude = models.FloatField(blank=True, editable=False)
 
     # override save method to get coordinates from OSM
     def save(self, *args, **kwargs):
         if not self.latitude or not self.longitude:     # only if no coordinate data
             # get geographical location based on address
-            coordinates = osm_geolocator.get(
+            coordinates = osm_geolocator.get_coordinates(
                 f'{self.address}%20{self.city}%20{self.state}%20{self.zip_code}'
             )
             if coordinates:

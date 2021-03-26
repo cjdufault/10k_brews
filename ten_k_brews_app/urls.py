@@ -1,18 +1,3 @@
-"""ten_k_brews URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import browse_views, detail_views, user_views
@@ -23,6 +8,7 @@ urlpatterns = [
     # browse urls
     path('browse/<str:type_filter>', browse_views.browse, name='browse'),
     path('search/', browse_views.search, name='search'),
+    path('search/by_location', browse_views.search_by_location, name='search_by_location'),
 
     # detail page urls
     path('establishment/<int:establishment_pk>', detail_views.establishment_detail, name='establishment_detail'),
@@ -32,6 +18,7 @@ urlpatterns = [
 
     # form urls
     path('new_drink/<int:establishment_pk>', detail_views.new_drink_form, name='new_drink_form'),
+    path('search/by_location/form', browse_views.location_search_form, name='location_search_form'),
 
     # account urls
     path('user/profile/<str:username>/', user_views.user_profile, name='user_profile'),
