@@ -5,8 +5,8 @@ from django.contrib import messages
 from ..models import Establishment, Drink, UserData
 from ..forms import UserRegistrationForm, EstablishmentSearchForm
 from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
-from ..account_stats import percent_visited
-from ..detect_mobile import is_mobile
+from ten_k_brews_app.utilities.account_stats import percent_visited
+from ten_k_brews_app.utilities.detect_mobile import is_mobile
 import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html

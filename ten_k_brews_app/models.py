@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from . import osm_geolocator
+from .utilities import osm_geolocator
 
 
 class Establishment(models.Model):

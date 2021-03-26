@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from ..models import Establishment, Drink, UserData
 from ..forms import EstablishmentSearchForm, NewDrinkForm
 from ..constants import LOCATION_ZOOM_LEVEL
-from ..detect_mobile import is_mobile
+from ten_k_brews_app.utilities.detect_mobile import is_mobile
 import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html

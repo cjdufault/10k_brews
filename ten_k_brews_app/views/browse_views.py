@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from ..forms import EstablishmentSearchForm
 from ..models import Establishment
 from ..constants import MINNESOTA_COORDINATES, WIDE_ZOOM_LEVEL
-from ..detect_mobile import is_mobile
+from ten_k_brews_app.utilities.detect_mobile import is_mobile
 import environ
 
 search_form = EstablishmentSearchForm   # for search bar used in title_bar.html
