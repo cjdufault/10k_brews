@@ -12,7 +12,7 @@ class EstablishmentSearchForm(forms.Form):
 # TODO: figure out how to set default value for num_results
 class EstablishmentSearchByLocationForm(forms.Form):
     location = forms.CharField(label='Address, City, or Zip', max_length=500)
-    num_results = forms.IntegerField(label='Number of results', min_value=1, max_value=100)
+    num_results = forms.IntegerField(label='Number of results', min_value=1, max_value=100, initial=10)
 
 
 class NewDrinkForm(forms.ModelForm):
