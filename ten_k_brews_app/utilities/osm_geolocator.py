@@ -11,8 +11,8 @@ def get_coordinates(address):
 
     if response:
         # extract relevant data
-        latitude = response['lat']
-        longitude = response['lon']
+        latitude = float(response['lat'])
+        longitude = float(response['lon'])
 
         return latitude, longitude
 

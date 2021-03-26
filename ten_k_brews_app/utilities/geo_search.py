@@ -33,7 +33,7 @@ def get_distance(coord_1, coord_2):
 
 # selects the X closest establishments to given coordinates
 def select_closest(coord, num_returned, establishments):
-    coordinates = float(coord[0]), float(coord[1])
+    coordinates = coord[0], coord[1]
     closest_dict = {}
 
     for establishment in establishments:

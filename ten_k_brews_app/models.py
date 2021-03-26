@@ -31,8 +31,8 @@ class Establishment(models.Model):
     state = models.CharField(max_length=2, blank=False)
     zip_code = models.CharField(max_length=5, blank=False)
 
-    latitude = models.CharField(max_length=20, blank=True)
-    longitude = models.CharField(max_length=20, blank=True)
+    latitude = models.FloatField(blank=True, editable=False)
+    longitude = models.FloatField(blank=True, editable=False)
 
     # override save method to get coordinates from OSM
     def save(self, *args, **kwargs):
