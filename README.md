@@ -1,6 +1,6 @@
 # 10k_brews
 
-Hosted at: Coming Soon!
+Hosted at: [cjdufault.pythonanywhere.com](cjdufault.pythonanywhere.com)
 
 10,000 Brews is a database of breweries, wineries, distilleries, and cideries located in Minnesota. It allows a user to keep track of which places they've visited and what drinks they've tried.
 
