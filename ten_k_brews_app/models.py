@@ -37,14 +37,13 @@ class Establishment(models.Model):
 
     # override save method to get coordinates from OSM
     def save(self, *args, **kwargs):
-        if not self.latitude or not self.longitude:     # only if no coordinate data
-            # get geographical location based on address
-            coordinates = osm_geolocator.get_coordinates(
-                f'{self.address}%20{self.city}%20{self.state}%20{self.zip_code}'
-            )
-            if coordinates:
-                self.latitude = coordinates[0]
-                self.longitude = coordinates[1]
+        # get geographical location based on address
+        coordinates = osm_geolocator.get_coordinates(
+            f'{self.address}%20{self.city}%20{self.state}%20{self.zip_code}'
+        )
+        if coordinates:
+            self.latitude = coordinates[0]
+            self.longitude = coordinates[1]
 
         super(Establishment, self).save(*args, **kwargs)
 

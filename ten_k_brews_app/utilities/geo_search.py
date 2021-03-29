@@ -5,23 +5,17 @@ import math
 from ..models import Establishment
 
 
-def get_closest_establishments(coord, num_returned):
+# returns a list of N establishments, sorted by distance from inputted coordinates
+def get_closest_establishments(coordinates, num_returned):
     establishments = Establishment.objects.all()
-    closest_dict = select_closest(coord, num_returned, establishments)
+    closest = select_closest(coordinates, num_returned, establishments)
 
-    # sorted list of Establishment objects, in order of distance
-    closest_list = []
-    for i in range(len(closest_dict)):
-        min_value = min(closest_dict.values())
-        keys = list(closest_dict.keys())
-        values = list(closest_dict.values())
-        min_value_key = keys[values.index(min_value)]
+    establishments = []
+    for item in closest:
+        establishment = Establishment.objects.get(pk=item[0])
+        establishments.append(establishment)
 
-        # remove the closest entry and add the corresponding Establishment to closest_list
-        closest_dict.pop(min_value_key)
-        closest_list.append(Establishment.objects.get(pk=int(min_value_key)))
-
-    return closest_list
+    return establishments
 
 
 # takes 2 sets of coordinates (tuples) and finds the distance between them in degrees lat/lon
@@ -32,26 +26,25 @@ def get_distance(coord_1, coord_2):
 
 
 # selects the X closest establishments to given coordinates
-def select_closest(coord, num_returned, establishments):
-    coordinates = coord[0], coord[1]
-    closest_dict = {}
+def select_closest(coordinates, num_returned, establishments):
+    closest_establishments = {}
 
     for establishment in establishments:
         distance = get_distance(coordinates, (float(establishment.latitude), float(establishment.longitude)))
 
-        # add to closest_dict if there's less than num_returned in there
-        if len(closest_dict) < num_returned:
-            closest_dict[str(establishment.pk)] = distance
+        # add to closest_establishments if there's less than num_returned in there
+        if len(closest_establishments) < num_returned:
+            closest_establishments[str(establishment.pk)] = distance
         else:
-            max_value = max(closest_dict.values())
+            max_value = max(closest_establishments.values())
 
             # if establishment closer than the max value in dict, pop the entry w/ max value & add establishment
             if max_value > distance:
-                keys = list(closest_dict.keys())
-                values = list(closest_dict.values())
+                keys = list(closest_establishments.keys())
+                values = list(closest_establishments.values())
                 max_value_key = keys[values.index(max_value)]  # get key for max value
 
-                closest_dict.pop(max_value_key)
-                closest_dict[str(establishment.pk)] = distance
+                closest_establishments.pop(max_value_key)
+                closest_establishments[str(establishment.pk)] = distance
 
-    return closest_dict
+    return sorted(closest_establishments.items(), key=lambda item: item[1])
