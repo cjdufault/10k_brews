@@ -10,12 +10,7 @@ def get_closest_establishments(coordinates, num_returned):
     establishments = Establishment.objects.all()
     closest = select_closest(coordinates, num_returned, establishments)
 
-    establishments = []
-    for item in closest:
-        establishment = Establishment.objects.get(pk=item[0])
-        establishments.append(establishment)
-
-    return establishments
+    return closest
 
 
 # takes 2 sets of coordinates (tuples) and finds the distance between them in degrees lat/lon
@@ -34,7 +29,7 @@ def select_closest(coordinates, num_returned, establishments):
 
         # add to closest if there's less than num_returned in there
         if len(closest) < num_returned:
-            closest[establishment.pk] = distance
+            closest[establishment] = distance
         else:
             max_value = max(closest.values())
 
@@ -45,6 +40,7 @@ def select_closest(coordinates, num_returned, establishments):
                 max_value_key = keys[values.index(max_value)]  # get key for max value
 
                 closest.pop(max_value_key)
-                closest[establishment.pk] = distance
+                closest[establishment] = distance
 
-    return sorted(closest.items(), key=lambda item: item[1])
+    closest = dict(sorted(closest.items(), key=lambda item: item[1]))
+    return list(closest.keys())
