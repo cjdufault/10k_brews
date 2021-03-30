@@ -8,20 +8,6 @@ from ..models import Establishment
 # returns a list of N establishments, sorted by distance from inputted coordinates
 def get_closest_establishments(coordinates, num_returned):
     establishments = Establishment.objects.all()
-    closest = select_closest(coordinates, num_returned, establishments)
-
-    return closest
-
-
-# takes 2 sets of coordinates (tuples) and finds the distance between them in degrees lat/lon
-def get_distance(coord_1, coord_2):
-    lat_diff = abs(coord_1[0] - coord_2[0])
-    lon_diff = abs(coord_1[1] - coord_2[1])
-    return math.sqrt((lat_diff ** 2) + (lon_diff ** 2))     # say hello to my friend Pythagoras
-
-
-# selects the X closest establishments to given coordinates
-def select_closest(coordinates, num_returned, establishments):
     closest = {}
 
     for establishment in establishments:
@@ -44,3 +30,10 @@ def select_closest(coordinates, num_returned, establishments):
 
     closest = dict(sorted(closest.items(), key=lambda item: item[1]))
     return list(closest.keys())
+
+
+# takes 2 sets of coordinates (tuples) and finds the distance between them in degrees lat/lon
+def get_distance(coord_1, coord_2):
+    lat_diff = abs(coord_1[0] - coord_2[0])
+    lon_diff = abs(coord_1[1] - coord_2[1])
+    return math.sqrt((lat_diff ** 2) + (lon_diff ** 2))     # say hello to my friend Pythagoras
