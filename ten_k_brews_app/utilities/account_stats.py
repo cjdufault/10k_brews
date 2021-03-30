@@ -16,7 +16,7 @@ def percent_visited(user, establishment_type=None):
         total = Establishment.objects.filter(type=establishment_type).count()
         visited = user_data.user_establishments.filter(type=establishment_type).count()
 
-    if visited > 0:
+    if total > 0:
         return (visited / total) * 100
 
     return 0
